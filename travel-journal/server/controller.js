@@ -30,6 +30,14 @@ module.exports = {
                 country_id INTEGER REFERENCES countries(country_id)
             );
 
+            INSERT INTO cities(name, rating)
+                VALUES('Windhelm', 2),
+                    ('Solitude', 3),
+                    ('Whiterun', 5),
+                    ('Markarth', 1),
+                    ('Riften', 3);
+                    
+
             insert into countries (name)
             values ('Afghanistan'),
             ('Albania'),
@@ -245,11 +253,14 @@ module.exports = {
         .catch((err) => console.log(err))
     },
     getCities: (req, res) => {
-        sequelize.query(`SELECT city_id, ci.name, ci.country_id, rating, ca.country_id, ca.name
-        FROM cities AS ci
-        JOIN countries AS ca ON ci.country_id = ca.country_id
-        WHERE ci.country_id = ca.country_id;`)
-        .then((dbResult) => res.status(200).send(dbResult[0]))
+        sequelize.query(`SELECT *
+        FROM cities ci, countries ca
+        WHERE ci.country_id = ca.country_id
+        ORDER BY rating DESC;`)
+        .then((dbResult) => {
+            res.status(200).send(dbResult[0])
+            console.log(dbResult[0])
+        })
         .catch((err) => console.log(err))
     },
     deleteCity: (req, res) => {
@@ -260,3 +271,8 @@ module.exports = {
         .catch((err) => console.log(err))
     }
 }
+
+// sequelize.query(`SELECT city_id, ci.name, ci.country_id, rating, ca.country_id, ca.name
+// FROM cities AS ci
+// JOIN countries AS ca ON ci.country_id = ca.country_id
+// WHERE ci.country_id = ca.country_id;`)

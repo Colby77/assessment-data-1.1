@@ -9,4 +9,16 @@ def sales_reports(log_file):    # defines a fuction taking in a file
             print(line)
 
 
-sales_reports(log_file)
+# sales_reports(log_file)
+
+def melon_orders_greaterthan(file, num):
+    for line in file:
+        line = line.rstrip()
+        line = line.split(':')
+        msg = line[1].split(' ')
+        qty = int(msg[1])
+        if qty > num:
+            print(" ".join(msg))
+        
+
+melon_orders_greaterthan(log_file, 10)
